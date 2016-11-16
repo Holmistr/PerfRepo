@@ -19,7 +19,6 @@ import org.perfrepo.model.Metric;
 import org.perfrepo.model.Tag;
 import org.perfrepo.model.Test;
 import org.perfrepo.model.TestExecution;
-import org.perfrepo.model.util.EntityUtils;
 import org.perfrepo.web.controller.BaseController;
 import org.perfrepo.web.controller.reports.charts.RfChartSeries;
 import org.perfrepo.web.service.TestService;
@@ -92,7 +91,9 @@ public class CompareExecutionsController extends BaseController {
    }
 
    public void setAsBaseline(Long execId) {
-      TestExecution baselineExec1 = EntityUtils.findById(testExecutions, execId);
+      //TODO: solve this
+      //TestExecution baselineExec1 = EntityUtils.findById(testExecutions, execId);
+      TestExecution baselineExec1 = null;
       if (baselineExec1 == null) {
          throw new IllegalStateException("Can't find execution " + execId);
       }
@@ -101,7 +102,9 @@ public class CompareExecutionsController extends BaseController {
 
    public void removeFromComparison(Long execId) {
       teComparator.remove(execId);
-      TestExecution execToRemove = EntityUtils.findById(testExecutions, execId);
+      //TODO: solve this
+      //TestExecution execToRemove = EntityUtils.findById(testExecutions, execId);
+      TestExecution execToRemove = null;
       if (baselineExecution == execToRemove) {
          baselineExecution = null;
       }
@@ -248,7 +251,9 @@ public class CompareExecutionsController extends BaseController {
       reloadSessionMessages();
       if (testExecutions != null) {
          Set<Long> idsInComparator = new HashSet<Long>(teComparator.getExecIds());
-         Set<Long> idsDisplayed = new HashSet<Long>(EntityUtils.extractIds(testExecutions));
+         //TODO: solve this
+         //Set<Long> idsDisplayed = new HashSet<Long>(EntityUtils.extractIds(testExecutions));
+         Set<Long> idsDisplayed = null;
          if (!idsInComparator.equals(idsDisplayed)) {
             testExecutions = null;
             test = null;

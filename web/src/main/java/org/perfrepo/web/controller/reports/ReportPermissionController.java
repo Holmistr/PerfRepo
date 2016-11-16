@@ -24,6 +24,7 @@ import org.perfrepo.web.controller.BaseController;
 import org.perfrepo.web.security.AuthorizationService;
 import org.perfrepo.web.service.ReportService;
 import org.perfrepo.web.service.UserService;
+import org.perfrepo.web.session.UserSession;
 import org.perfrepo.web.viewscope.ViewScoped;
 
 import javax.annotation.PostConstruct;
@@ -38,10 +39,13 @@ import java.util.List;
 public class ReportPermissionController extends BaseController {
 
    @Inject
-   ReportService reportService;
+   private ReportService reportService;
 
    @Inject
-   UserService userService;
+   private UserService userService;
+
+   @Inject
+   private UserSession userSession;
 
    @Deprecated
    private Collection<Permission> permissionsOld = new ArrayList<Permission>();
@@ -83,7 +87,7 @@ public class ReportPermissionController extends BaseController {
 
    public List<User> getUsersForSelection() {
       if (usersForSelection == null) {
-         usersForSelection = userService.getUsers();
+         usersForSelection = userService.getAllUsers();
       }
 
       return usersForSelection;
@@ -121,7 +125,7 @@ public class ReportPermissionController extends BaseController {
          permission.setLevel(AccessLevel.GROUP);
          permission.setAccessType(AccessType.WRITE);
 
-         Collection<Group> groups = userService.getFullUser(userService.getLoggedUser().getId()).getGroups();
+         Collection<Group> groups = userService.getUser(userSession.getLoggedUser().getId()).getGroups();
          permission.setGroupId(groups.stream().findFirst().get().getId());
 
          permissions.add(permission);

@@ -24,6 +24,7 @@ import org.perfrepo.web.service.TestService;
 import org.perfrepo.web.service.UserService;
 import org.perfrepo.web.service.exceptions.ServiceException;
 import org.perfrepo.web.session.SearchCriteriaSession;
+import org.perfrepo.web.session.UserSession;
 import org.perfrepo.web.util.MessageUtils;
 import org.perfrepo.web.viewscope.ViewScoped;
 
@@ -59,6 +60,9 @@ public class TestController extends BaseController {
 
    @Inject
    private UserService userService;
+
+   @Inject
+   private UserSession userSession;
 
    @Inject
    private SearchCriteriaSession criteriaSession;
@@ -186,19 +190,19 @@ public class TestController extends BaseController {
    /** --------------- Subscription for alerting ----------------- **/
 
    public void addSubscriber() {
-      User currentUser = userService.getLoggedUser();
+      User currentUser = userSession.getLoggedUser();
       testService.addSubscriber(currentUser, test);
       redirectWithMessage("/test/" + testId, INFO, "page.test.subscribed");
    }
 
    public void removeSubscriber() {
-      User currentUser = userService.getLoggedUser();
+      User currentUser = userSession.getLoggedUser();
       testService.removeSubscriber(currentUser, test);
       redirectWithMessage("/test/" + testId, INFO, "page.test.unsubscribed");
    }
 
    public boolean isSubscribed() {
-      User currentUser = userService.getLoggedUser();
+      User currentUser = userSession.getLoggedUser();
       return testService.isUserSubscribed(currentUser, test);
    }
 
@@ -406,7 +410,8 @@ public class TestController extends BaseController {
                tags.add(tag);
             }
 
-            alert.setTags(tags);
+            //TODO: solve this
+            //alert.setTags(tags);
          }
 
          if (alert.getId() == null) {

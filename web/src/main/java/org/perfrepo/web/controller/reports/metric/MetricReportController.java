@@ -191,7 +191,8 @@ public class MetricReportController extends BaseController {
       }
 
       report.setProperties(reportProperties);
-      report.setPermissions(reportAccessController.getPermissionsOld());
+      //TODO: solve this
+      //report.setPermissions(reportAccessController.getPermissionsOld());
       if (reportId == null) {
          reportService.createReport(report);
       } else {
@@ -608,9 +609,11 @@ public class MetricReportController extends BaseController {
 
          pointDetails.exec = testService.getFullTestExecution(pointDetails.execId);
 
+         //TODO: solve this
+         /*
          for (FavoriteParameter fp : userService.getFavoriteParametersForTest(pointDetails.exec.getTest())) {
             pointDetails.favParams.add(new PointDetailsFavParam(fp.getLabel(), pointDetails.exec.findParameter(fp.getParameterName())));
-         }
+         }*/
       }
 
       /**

@@ -20,14 +20,12 @@ import org.perfrepo.model.to.SearchResultWrapper;
 import org.perfrepo.model.to.TestExecutionSearchTO;
 import org.perfrepo.model.to.TestExecutionSearchTO.ParamCriteria;
 import org.perfrepo.model.userproperty.GroupFilter;
-import org.perfrepo.model.util.EntityUtils;
 import org.perfrepo.web.service.TestService;
 import org.perfrepo.web.service.exceptions.ServiceException;
 import org.perfrepo.web.session.SearchCriteriaSession;
 import org.perfrepo.web.session.TEComparatorSession;
 import org.perfrepo.web.session.UserSession;
 import org.perfrepo.web.util.TagUtils;
-import org.perfrepo.web.util.ViewUtils;
 import org.perfrepo.web.viewscope.ViewScoped;
 
 import javax.annotation.PostConstruct;
@@ -123,7 +121,9 @@ public class TestExecutionSearchController extends BaseController {
    }
 
    public String itemParam(TestExecution exec, String paramName) {
-      return ViewUtils.displayValue(exec.findParameter(paramName));
+      //TODO: solve this
+      //return ViewUtils.displayValue(exec.findParameter(paramName));
+      return null;
    }
 
    public void addParameterCriteria() {
@@ -206,7 +206,7 @@ public class TestExecutionSearchController extends BaseController {
    /** ----- Methods for mass operations ---- **/
 
    public void addAllCurrentResultsToComparison() {
-      List<Long> ids = EntityUtils.extractIds(result);
+      List<Long> ids = result.stream().map(TestExecution::getId).collect(Collectors.toList());
       ids.stream().forEach(id -> comparatorSession.add(id));
    }
 

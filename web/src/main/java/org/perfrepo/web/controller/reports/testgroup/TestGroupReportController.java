@@ -157,6 +157,8 @@ public class TestGroupReportController extends BaseController {
             tags.add(tagsKey);
          }
          String columnKey1 = tagAlias.get(tagsKey) != null ? tagAlias.get(tagsKey) : tagsKey;
+         //TODO: solve this
+         /*
          for (Value value : te.getValues()) {
             String metricName = value.getMetricName();
             if (!metrics.contains(metricName)) {
@@ -171,7 +173,7 @@ public class TestGroupReportController extends BaseController {
                   valueCell.addValues(te.getValues());
                }
             }
-         }
+         }*/
       }
       if (selectedMetrics.isEmpty()) {
          selectedMetrics.addAll(metrics);
@@ -407,7 +409,8 @@ public class TestGroupReportController extends BaseController {
       }
       ReportUtils.createOrUpdateReportPropertyInMap(properties, "configuration.threshold", String.valueOf(semiNegativeThreshold), report);
       report.setProperties(properties);
-      report.setPermissions(reportAccessController.getPermissionsOld());
+      //TODO: solve this
+      //report.setPermissions(reportAccessController.getPermissionsOld());
       if (report.getId() == null) {
          reportService.createReport(report);
       } else {
@@ -436,7 +439,7 @@ public class TestGroupReportController extends BaseController {
       Collection<Permission> permissions = reportAccessController.getPermissionsOld();
       List<Permission> clonedPermissions = new ArrayList<Permission>();
       for (Permission p : permissions) {
-         Permission newPerm = p.clone();
+         Permission newPerm = p;
          newPerm.setId(null);
          newPerm.setReport(null);
          clonedPermissions.add(newPerm);

@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 import org.perfrepo.model.*;
 import org.perfrepo.model.builder.TestExecutionBuilder;
 import org.perfrepo.model.user.User;
-import org.perfrepo.model.util.EntityUtils;
 import org.perfrepo.web.controller.reports.charts.RfChartSeries;
 import org.perfrepo.web.service.AlertingService;
 import org.perfrepo.web.service.TestService;
@@ -182,7 +181,7 @@ public class TestExecutionController extends BaseController {
    }
 
    public void setEditedTestExecution() {
-      this.editedTestExecution = testExecution.clone();
+      this.editedTestExecution = testExecution;
    }
 
    public void unsetEditedTestExecution() {
@@ -276,7 +275,7 @@ public class TestExecutionController extends BaseController {
    }
 
    public void setEditedParameter(TestExecutionParameter param) {
-      this.editedParameter = param == null ? null : param.clone();
+      this.editedParameter = param == null ? null : param;
    }
 
    public void unsetEditedParameter() {
@@ -308,7 +307,9 @@ public class TestExecutionController extends BaseController {
    }
 
    public List<TestExecutionParameter> getTestExecutionParameters() {
-      return testExecution.getSortedParameters();
+      //TODO: solve this
+      // return testExecution.getSortedParameters();
+      return null;
    }
 
    public List<Tag> getTags() {
@@ -316,7 +317,9 @@ public class TestExecutionController extends BaseController {
    }
 
    public Collection<TestExecutionAttachment> getAttachments() {
-      return testExecution == null ? Collections.<TestExecutionAttachment>emptyList() : testExecution.getAttachments();
+      // TODO: solve this
+      //return testExecution == null ? Collections.<TestExecutionAttachment>emptyList() : testExecution.getAttachments();
+      return null;
    }
 
    public String delete() {
@@ -337,7 +340,6 @@ public class TestExecutionController extends BaseController {
       if (param != null) {
          try {
             testService.removeParameter(param);
-            EntityUtils.removeById(testExecution.getParameters(), param.getId());
          } catch (Exception e) {
             throw new RuntimeException(e);
          }
@@ -351,8 +353,7 @@ public class TestExecutionController extends BaseController {
          editedParameter.setTestExecution(idHolder);
          try {
             TestExecutionParameter freshParam = testService.updateParameter(editedParameter);
-            EntityUtils.removeById(testExecution.getParameters(), freshParam.getId());
-            testExecution.getParameters().add(freshParam);
+            testExecution.getParameters().put(freshParam.getName(), freshParam);
             editedParameter = null;
          } catch (ServiceException e) {
             addMessage(e);
@@ -362,7 +363,7 @@ public class TestExecutionController extends BaseController {
    }
 
    public void setEditedValue(Value value) {
-      this.editedValue = value == null ? null : value.cloneWithParameters();
+      this.editedValue = value == null ? null : value;
       if (editedValue != null || editedValue.getParameters() != null) {
          if (editedValue.getParameters() instanceof List) {
             Collections.sort((List<ValueParameter>) editedValue.getParameters());
@@ -393,11 +394,8 @@ public class TestExecutionController extends BaseController {
       }
 
       ValueParameter vp = new ValueParameter();
-      if (editedValue.getParameters() == null) {
-         editedValue.setParameters(new ArrayList<>());
-      }
 
-      editedValue.getParameters().add(vp);
+      editedValue.getParameters().put(vp.getName(), vp);
    }
 
    public void removeEditedValueParameter(ValueParameter vp) {
@@ -426,21 +424,25 @@ public class TestExecutionController extends BaseController {
       Value freshValue = null;
       try {
          if (editedValue.getId() == null) {
-            Metric selectedMetric = EntityUtils.findById(test.getMetrics(), editedValueMetricSelectionId);
+            //TODO: solve this
+            //Metric selectedMetric = EntityUtils.findById(test.getMetrics(), editedValueMetricSelectionId);
+            Metric selectedMetric = null;
 
             if (selectedMetric == null) {
                addMessage(ERROR, "page.exec.errorMetricMandatory");
                return;
             }
 
-            editedValue.setMetric(selectedMetric.clone());
+            editedValue.setMetric(selectedMetric);
             freshValue = testService.addValue(editedValue);
          } else {
             freshValue = testService.updateValue(editedValue);
-            EntityUtils.removeById(testExecution.getValues(), freshValue.getId());
+            //TODO: solve this
+            // EntityUtils.removeById(testExecution.getValues(), freshValue.getId());
          }
 
-         testExecution.getValues().add(freshValue);
+         //TODO: solve this
+         // testExecution.getValues().add(freshValue);
 
          alertingService.processAlerts(testExecution);
 
@@ -469,7 +471,8 @@ public class TestExecutionController extends BaseController {
          value.setTestExecution(idHolder);
          try {
             testService.removeValue(value);
-            EntityUtils.removeById(testExecution.getValues(), value.getId());
+            //TODO: solve this
+            //EntityUtils.removeById(testExecution.getValues(), value.getId());
             ValueInfo prevValueInfo = MultiValue.find(values, value);
             values = MultiValue.createFrom(testExecution);
             showMultiValue(prevValueInfo.getMetricName());
@@ -572,7 +575,9 @@ public class TestExecutionController extends BaseController {
    }
 
    public String displayValueFavParam(String param) {
-      return displayValueTable(testExecution.findParameter(param));
+      //TODO: solve this
+      //return displayValueTable(testExecution.findParameter(param));
+      return null;
    }
 
    public String displayValueTable(TestExecutionParameter param) {

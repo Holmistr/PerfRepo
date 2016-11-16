@@ -21,12 +21,7 @@ import com.google.common.collect.Multimap;
 import org.apache.commons.collections.keyvalue.MultiKey;
 import org.perfrepo.model.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TestExecutionTable {
@@ -62,17 +57,19 @@ public class TestExecutionTable {
       this.jobId = jobId;
       this.baseTestExecutions = testExecutions;
       for (TestExecution te : testExecutions) {
-         for (TestExecutionParameter tep : te.getParameters()) {
+         for (String paramKey : te.getParameters().keySet()) {
+            TestExecutionParameter tep = te.getParameters().get(paramKey);
             if (!parameterNames.contains(tep.getName())) {
                parameterNames.add(tep.getName());
             }
          }
-         for (Value value : te.getValues()) {
+         //TODO: solve this
+         /*for (Value value : te.getValues()) {
             Metric metric = value.getMetric();
             if (!metrics.contains(metric)) {
                metrics.add(metric);
             }
-         }
+         }*/
       }
       addTestExecutions(jobId, testExecutions, true);
    }
@@ -138,13 +135,17 @@ public class TestExecutionTable {
       }
       for (TestExecution te : testExecutions) {
          String[] paramValues = new String[parameterNames.size()];
+         //TODO: solve this
+         /*
          for (TestExecutionParameter tep : te.getParameters()) {
             paramValues[parameterNames.indexOf(tep.getName())] = tep.getValue();
-         }
+         }*/
          MultiKey params = new MultiKey(paramValues);
          //only if we can compare the value with something in the table
          //first TEs (jobId) should always put value to the table
          if (baseTEs || table.containsRow(params)) {
+            //TODO: solve this
+            /*
             for (Value value : te.getValues()) {
                MultiKey columnKey = new MultiKey(jobId, value.getMetric().getName());
                if (!baseTEs) {
@@ -156,7 +157,7 @@ public class TestExecutionTable {
                if (bestValue == null || compareValues(bestValue, value) < 0) {
                   bestValues.put(params, value.getMetric().getName(), value);
                }
-            }
+            }*/
             tags.putAll(jobId, te.getTags().stream().map(Tag::getName).collect(Collectors.toList()));
          }
       }

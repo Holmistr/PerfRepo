@@ -16,11 +16,9 @@ package org.perfrepo.web.controller.reports;
 
 import org.apache.log4j.Logger;
 import org.perfrepo.model.*;
-import org.perfrepo.model.util.EntityUtils;
 import org.perfrepo.web.controller.BaseController;
 import org.perfrepo.web.service.TestService;
 import org.perfrepo.web.session.TEComparatorSession;
-import org.perfrepo.web.util.ViewUtils;
 import org.perfrepo.web.viewscope.ViewScoped;
 
 import javax.faces.context.FacesContext;
@@ -63,11 +61,12 @@ public class CompareParametersController extends BaseController {
          return Collections.emptyList();
       }
       Set<String> pset = new HashSet<String>();
-      for (TestExecution te : testExecutions) {
-         for (TestExecutionParameter p : te.getParameters()) {
-            pset.add(p.getName());
-         }
-      }
+      //for (TestExecution te : testExecutions) {
+         //TODO: solve this
+         //for (TestExecutionParameter p : te.getParameters()) {
+         //   pset.add(p.getName());
+         // }
+      //}
       List<String> r = new ArrayList<String>(pset);
       Collections.sort(r);
       return r;
@@ -75,7 +74,9 @@ public class CompareParametersController extends BaseController {
 
    public void removeFromComparison(Long execId) {
       teComparator.remove(execId);
-      TestExecution execToRemove = EntityUtils.findById(testExecutions, execId);
+      //TODO: solve this
+      //TestExecution execToRemove = EntityUtils.findById(testExecutions, execId);
+      TestExecution execToRemove = null;
       if (execToRemove != null && testExecutions != null) {
          testExecutions.remove(execToRemove);
       }
@@ -105,7 +106,9 @@ public class CompareParametersController extends BaseController {
       reloadSessionMessages();
       if (testExecutions != null) {
          Set<Long> idsInComparator = new HashSet<Long>(teComparator.getExecIds());
-         Set<Long> idsDisplayed = new HashSet<Long>(EntityUtils.extractIds(testExecutions));
+         //TODO: solve this
+         //Set<Long> idsDisplayed = new HashSet<Long>(EntityUtils.extractIds(testExecutions));
+         Set<Long> idsDisplayed = null;
          if (!idsInComparator.equals(idsDisplayed)) {
             testExecutions = null;
             test = null;
@@ -139,17 +142,22 @@ public class CompareParametersController extends BaseController {
    }
 
    public String getParamValue(TestExecution exec, String paramName) {
-      return ViewUtils.displayValue(exec.findParameter(paramName));
+      //TODO: solve this
+      //return ViewUtils.displayValue(exec.findParameter(paramName));
+      return null;
    }
 
    public boolean paramsEqual(String paramName) {
       if (testExecutions == null || testExecutions.isEmpty()) {
          return true;
       }
-      TestExecutionParameter param = testExecutions.get(0).findParameter(paramName);
+      //TODO: solve this
+      //TestExecutionParameter param = testExecutions.get(0).findParameter(paramName);
+      TestExecutionParameter param = null;
       String commonValue = param == null ? null : param.getValue();
       for (TestExecution exec : testExecutions) {
-         param = exec.findParameter(paramName);
+         //TODO: solve this
+         //param = exec.findParameter(paramName);
          if (param == null) {
             if (commonValue != null) {
                return false;
