@@ -26,7 +26,6 @@ import javax.ejb.SessionContext;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.Map;
@@ -36,7 +35,6 @@ import java.util.Map;
  *
  * @author Michal Linhard (mlinhard@redhat.com)
  */
-@Named(value = "userSession")
 @SessionScoped
 public class UserSession implements Serializable {
 
