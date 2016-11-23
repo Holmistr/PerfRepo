@@ -82,7 +82,7 @@ public class ParametrizedTestExecutionController extends BaseController {
       testId = getRequestParamLong("testId");
       jobId = getRequestParamLong("jobId");
       if (testId != null && jobId != null) {
-         test = testService.getFullTest(testId);
+         test = testService.getTest(testId);
          //testExecutions = testService.getFullTestExecutionsByTestAndJob(testId, jobId);
          table.process(jobId, testExecutions);
          renderedParam = new HashMap<String, String>();

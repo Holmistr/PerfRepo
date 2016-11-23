@@ -16,7 +16,7 @@ package org.perfrepo.web.controller;
 
 import org.apache.log4j.Logger;
 import org.perfrepo.model.TestExecutionParameter;
-import org.perfrepo.web.service.TestService;
+import org.perfrepo.web.service.TestExecutionService;
 import org.perfrepo.web.viewscope.ViewScoped;
 
 import javax.inject.Inject;
@@ -37,7 +37,7 @@ public class ParameterShowController extends BaseController {
    private Long paramId;
 
    @Inject
-   private TestService testService;
+   private TestExecutionService testExecutionService;
 
    private TestExecutionParameter param = null;
 
@@ -62,7 +62,7 @@ public class ParameterShowController extends BaseController {
          log.error("No parameter ID supplied");
          redirectWithMessage("/", ERROR, "page.showParam.errorNoParamId");
       } else {
-         param = testService.getFullParameter(paramId);
+         param = testExecutionService.getParameter(paramId);
          if (param == null) {
             log.error("Can't find parameter with id " + paramId);
             redirectWithMessage("/", ERROR, "page.showParam.errorParamNotFound", paramId);

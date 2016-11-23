@@ -113,7 +113,9 @@ public class BoxplotReportController extends BaseController {
 
    public List<Test> getTestsForSelection() {
       if (testsForSelection == null) {
-         testsForSelection = testService.getAvailableTests().getResult();
+         //TODO: solve this
+         //testsForSelection = testService.getAvailableTests().getResult();
+         testsForSelection = null;
          Collections.sort(testsForSelection, (o1, o2) -> o1.getName().compareTo(o2.getName()));
       }
 
@@ -154,7 +156,9 @@ public class BoxplotReportController extends BaseController {
    }
 
    public List<Metric> getMetricsForSelection(Chart chart) {
-      return testService.getAllMetrics(chart.getTestId());
+      Test test = new Test();
+      test.setId(chart.getTestId());
+      return testService.getMetricsForTest(test);
    }
 
    public List<Chart> getCharts() {
