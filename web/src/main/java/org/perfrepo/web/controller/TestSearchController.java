@@ -17,10 +17,9 @@ package org.perfrepo.web.controller;
 import org.perfrepo.model.Test;
 import org.perfrepo.model.to.OrderBy;
 import org.perfrepo.model.to.SearchResultWrapper;
-import org.perfrepo.model.to.TestSearchTO;
 import org.perfrepo.model.userproperty.GroupFilter;
 import org.perfrepo.web.service.TestService;
-import org.perfrepo.web.service.exceptions.ServiceException;
+import org.perfrepo.web.service.search.TestSearchCriteria;
 import org.perfrepo.web.session.SearchCriteriaSession;
 import org.perfrepo.web.session.UserSession;
 import org.perfrepo.web.viewscope.ViewScoped;
@@ -66,12 +65,12 @@ public class TestSearchController extends BaseController {
    }
 
    public void search() {
-      TestSearchTO criteria = criteriaSession.getTestSearchCriteria();
-      criteria.setGroupFilter(userSession.getGroupFilter());
+      TestSearchCriteria criteria = criteriaSession.getTestSearchCriteria();
+      //criteria.setGroupFilter(userSession.getGroupFilter());
       criteria.setLimitHowMany(criteria.getLimitHowMany() <= 0 ? null : criteria.getLimitHowMany());
       criteria.setLimitFrom(criteria.getLimitHowMany() == null ? null : (resultsPageNumber - 1) * criteria.getLimitHowMany());
 
-      SearchResultWrapper<Test> searchResult = testService.searchTest(criteria);
+      SearchResultWrapper<Test> searchResult = testService.searchTests(criteria);
       result = searchResult.getResult();
       totalNumberOfResults = searchResult.getTotalSearchResultsCount();
 
@@ -89,12 +88,12 @@ public class TestSearchController extends BaseController {
          throw new IllegalStateException("Bad request, missing idToDelete");
       }
 
-      try {
-         testService.removeTest(testToRemove);
-         addMessage(INFO, "page.testSearch.testDeleted", testToRemove.getName());
-      } catch (ServiceException e) {
-         addMessage(e);
-      }
+      //try {
+      testService.removeTest(testToRemove);
+      addMessage(INFO, "page.testSearch.testDeleted", testToRemove.getName());
+      //} catch (ServiceException e) {
+      //   addMessage(e);
+      //}
 
       search();
       return null;
@@ -131,11 +130,12 @@ public class TestSearchController extends BaseController {
    }
 
    public List<String> autocompleteTest(String test) {
-      return testService.getTestsByPrefix(test);
+      //return testService.getTestsByUidPrefix(test);
+      return null;
    }
 
    public void setGroupFilter(GroupFilter groupFilter) {
-      userSession.setGroupFilter(groupFilter);
+      //userSession.setGroupFilter(groupFilter);
       criteriaChanged();
       search();
    }
@@ -157,7 +157,7 @@ public class TestSearchController extends BaseController {
    /** ----- Functions for pagination ----- **/
 
    public void changeHowMany(ValueChangeEvent e) {
-      TestSearchTO criteria = criteriaSession.getTestSearchCriteria();
+      TestSearchCriteria criteria = criteriaSession.getTestSearchCriteria();
       criteria.setLimitHowMany((Integer) e.getNewValue());
 
       search();
@@ -170,7 +170,7 @@ public class TestSearchController extends BaseController {
    }
 
    private void constructPagination() {
-      TestSearchTO criteria = criteriaSession.getTestSearchCriteria();
+      TestSearchCriteria criteria = criteriaSession.getTestSearchCriteria();
 
       this.resultsPageNumber = (criteria.getLimitFrom() == null) ? 1 : (criteria.getLimitFrom() / criteria.getLimitHowMany()) + 1;
       computeTotalNumberOfPages();

@@ -16,7 +16,6 @@ package org.perfrepo.web.controller;
 
 import org.apache.log4j.Logger;
 import org.perfrepo.model.report.Report;
-import org.perfrepo.model.userproperty.ReportFilter;
 import org.perfrepo.web.service.ReportService;
 import org.perfrepo.web.session.UserSession;
 import org.perfrepo.web.viewscope.ViewScoped;
@@ -63,22 +62,22 @@ public class ReportListController extends BaseController {
    }
 
    public void setAllReports() {
-      userSession.setReportFilter(ReportFilter.ALL);
+      //userSession.setReportFilter(ReportFilter.ALL);
       updateSavedReports();
    }
 
    public void setMyReports() {
-      userSession.setReportFilter(ReportFilter.MY);
+      //userSession.setReportFilter(ReportFilter.MY);
       updateSavedReports();
    }
 
    public void setTeamReports() {
-      userSession.setReportFilter(ReportFilter.TEAM);
+      //userSession.setReportFilter(ReportFilter.TEAM);
       updateSavedReports();
    }
 
    private void updateSavedReports() {
-      switch (userSession.getReportFilter()) {
+      /*switch (userSession.getReportFilter()) {
          case MY:
             savedReports = reportService.getAllUsersReports();
             break;
@@ -91,7 +90,7 @@ public class ReportListController extends BaseController {
          default:
             savedReports = reportService.getAllGroupReports();
             break;
-      }
+      }*/
       Collections.sort(savedReports);
    }
 
