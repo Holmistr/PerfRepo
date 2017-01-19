@@ -2,7 +2,7 @@ package org.perfrepo.web.adapter.dummy_impl.storage;
 
 
 import org.perfrepo.dto.user.UserDto;
-import org.perfrepo.model.MetricComparator;
+import org.perfrepo.enums.MetricComparator;
 import org.perfrepo.dto.metric.MetricDto;
 import org.perfrepo.dto.test.TestDto;
 import org.perfrepo.dto.group.GroupDto;
