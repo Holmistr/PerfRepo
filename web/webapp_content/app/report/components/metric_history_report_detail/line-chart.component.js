@@ -16,16 +16,22 @@
         var vm = this;
         var colorIndex = 0;
         vm.data = [];
+
+        var maxSeriesY = 0;
         // series
         angular.forEach(vm.chartData.series, function(series) {
+            maxSeriesY = Math.max(maxSeriesY, d3.max(series.values, function(d) {return d.y}));
             vm.data.push({
                 key: series.name,
                 values: series.values,
                 color: CHART_COLORS[colorIndex++ % CHART_COLORS.length]
             });
         });
+
+        var maxBaselineY = 0;
         // baselines
         angular.forEach(vm.chartData.baselines, function(baseline) {
+            maxBaselineY = Math.max(maxBaselineY, baseline.value.y);
             var data = [
                     {
                         x: baseline.value.x1,
@@ -69,12 +75,13 @@
                 },
                 yAxis: {
                     axisLabel: "Metric value",
-                    tickFormat: function(d){
+                    tickFormat: function(d) {
                         return d3.format('.0f')(d);
                     },
                     axisLabelDistance: 18
                 },
                 lines: {
+                    yDomain: [0, Math.max(maxSeriesY, maxBaselineY)],
                     dispatch: {
                         elementClick: function(e) {
                             pointClicked(e);
